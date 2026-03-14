@@ -1,1 +1,0 @@
-# shopkeeperglove.github.io
