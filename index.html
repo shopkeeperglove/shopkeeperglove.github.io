@@ -1,0 +1,167 @@
+<script>
+
+/* floating gloves */
+
+function spawnGlove(){
+
+let glove = document.createElement("div");
+
+glove.innerHTML = "🧤";
+glove.className = "floatingGlove";
+
+glove.style.left = Math.random()*100 + "vw";
+
+glove.style.animationDuration = (6 + Math.random()*6) + "s";
+
+document.body.appendChild(glove);
+
+setTimeout(()=>{
+glove.remove();
+},12000);
+
+}
+
+setInterval(spawnGlove,1200);
+
+/* alert animation */
+
+function showAlert(text,type){
+
+let bar = document.getElementById("alertBar");
+
+bar.innerHTML = text;
+
+bar.classList.remove("goodAlert","badAlert");
+
+if(type === "good"){
+bar.classList.add("goodAlert");
+}
+else{
+bar.classList.add("badAlert");
+}
+
+bar.classList.add("show");
+
+setTimeout(()=>{
+bar.classList.remove("show");
+},2500);
+
+}
+
+/* main checker */
+
+function check(){
+
+let day = parseInt(document.getElementById("day").value);
+let glove = document.getElementById("glove").value.toLowerCase();
+let profit = parseFloat(document.getElementById("profit").value);
+let profitColor = document.getElementById("profitColor").value.toLowerCase();
+
+if(profit < 0){
+profit = 0;
+}
+
+let banned = [
+"l.o.l.b.o.m.b",
+"lol bomb",
+"bob",
+"plague",
+"sbeve",
+"ufo",
+"bubble",
+"lamp",
+"overkill"
+];
+
+let result = document.getElementById("result");
+let money = document.getElementById("money");
+
+/* reward calculation 11.9% */
+
+let reward = profit * 0.119;
+reward = reward.toFixed(2);
+
+money.innerHTML = "Money you will receive: $" + reward;
+
+/* banned glove rule */
+
+if(banned.includes(glove)){
+
+if(day >=1 && day <=4){
+result.innerHTML = "BAD (Do NOT buy Day 1-4)";
+result.style.color = "yellow";
+showAlert("DO NOT BUY THIS GLOVE","bad");
+return;
+}
+
+if(day == 5){
+result.innerHTML = "AMAZING (Buy on Day 5)";
+result.style.color = "lime";
+showAlert("AMAZING BUY","good");
+return;
+}
+
+}
+
+/* auto profit color detection */
+
+if(profitColor === ""){
+
+if(profit >= 10){
+profitColor = "green";
+}
+else{
+profitColor = "yellow";
+}
+
+}
+
+/* profit color rule */
+
+if(profitColor === "green"){
+result.innerHTML = "GOOD DEAL";
+result.style.color = "lime";
+showAlert("GOOD DEAL","good");
+}
+else if(profitColor === "yellow"){
+result.innerHTML = "BAD DEAL";
+result.style.color = "yellow";
+showAlert("BAD DEAL","bad");
+}
+else{
+result.innerHTML = "Type profit colour: green or yellow";
+result.style.color = "white";
+}
+
+}
+
+/* next day */
+
+function nextDay(){
+
+let dayInput = document.getElementById("day");
+let day = parseInt(dayInput.value) || 0;
+
+if(day < 5){
+dayInput.value = day + 1;
+}
+
+}
+
+/* clear inputs */
+
+function clearInputs(){
+
+document.getElementById("day").value = "";
+document.getElementById("glove").value = "";
+document.getElementById("rating").value = "";
+document.getElementById("price").value = "";
+document.getElementById("profit").value = "";
+document.getElementById("profitColor").value = "";
+
+document.getElementById("result").innerHTML = "";
+document.getElementById("money").innerHTML = "";
+
+}
+
+</script>
